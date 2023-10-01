@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7036488336274985482
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2262160706579872726}
+  - component: {fileID: 7054869804149758828}
+  m_Layer: 0
+  m_Name: Map
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2262160706579872726
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7036488336274985482}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7054869804149758828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7036488336274985482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfccb5fff86421d42bb46c4dc3a60281, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wallPrefab: {fileID: 4305425798432361228, guid: 8bc898a7dbdafc041a24857db427887b, type: 3}
+  floorPrefab: {fileID: 6386831692072858540, guid: d26203ea1bd2d5243be4c30dd536b578, type: 3}
+  tileset:
+  - {fileID: -2141504959, guid: 9f5b85197b8d3554e9f584a4e94ed7f5, type: 3}
+  - {fileID: 1957827063, guid: 9f5b85197b8d3554e9f584a4e94ed7f5, type: 3}
+  - {fileID: 544241040, guid: 9f5b85197b8d3554e9f584a4e94ed7f5, type: 3}
+  - {fileID: 1022367220, guid: 9f5b85197b8d3554e9f584a4e94ed7f5, type: 3}
+  - {fileID: -774121078, guid: 9f5b85197b8d3554e9f584a4e94ed7f5, type: 3}
+  - {fileID: 1160150810, guid: 9f5b85197b8d3554e9f584a4e94ed7f5, type: 3}
+  - {fileID: -246002168, guid: 9f5b85197b8d3554e9f584a4e94ed7f5, type: 3}
+  - {fileID: 1703606467, guid: 9f5b85197b8d3554e9f584a4e94ed7f5, type: 3}
+  - {fileID: -708847275, guid: 9f5b85197b8d3554e9f584a4e94ed7f5, type: 3}
+  - {fileID: 1589333964, guid: 9f5b85197b8d3554e9f584a4e94ed7f5, type: 3}
+  - {fileID: 485323103, guid: 9f5b85197b8d3554e9f584a4e94ed7f5, type: 3}
+  - {fileID: -105772511, guid: 9f5b85197b8d3554e9f584a4e94ed7f5, type: 3}
+  - {fileID: -1525297828, guid: 9f5b85197b8d3554e9f584a4e94ed7f5, type: 3}
+  - {fileID: -243338185, guid: 9f5b85197b8d3554e9f584a4e94ed7f5, type: 3}
+  - {fileID: 673330454, guid: 9f5b85197b8d3554e9f584a4e94ed7f5, type: 3}
+  - {fileID: 247049964, guid: 9f5b85197b8d3554e9f584a4e94ed7f5, type: 3}
+  floorWallSprite: {fileID: 291628358, guid: 88f80ac69d62cf14e8b4fa0f8f3d384e, type: 3}
+  normalFloorSprite: {fileID: -36817427, guid: 88f80ac69d62cf14e8b4fa0f8f3d384e, type: 3}
