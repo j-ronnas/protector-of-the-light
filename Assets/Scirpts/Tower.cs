@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Tower : MonoBehaviour
 {
-    List<Enemy> targets;
+    List<EnemyController> targets;
 
     [SerializeField]
     GameObject projectile;
@@ -30,7 +30,7 @@ public class Tower : MonoBehaviour
     {
         position = transform.position;
         timer = cooldown;
-        targets = new List<Enemy>();
+        targets = new List<EnemyController>();
         FindAnyObjectByType<TickManager>().AddTickAction(OnTick);
         enemySpawner = FindAnyObjectByType<EnemySpawner>();
     }
@@ -44,7 +44,7 @@ public class Tower : MonoBehaviour
     private void OnTick()
     {
         targets.Clear();
-        foreach (Enemy enemy in enemySpawner.GetEnemiesWithin(position, range))
+        foreach (EnemyController enemy in enemySpawner.GetEnemiesWithin(position, range))
         {
             targets.Add(enemy);
         }

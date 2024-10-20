@@ -8,9 +8,9 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     [SerializeField]
-    Enemy enemyPrefab;
+    EnemyController enemyPrefab;
 
-    HashSet<Enemy> enemies;
+    HashSet<EnemyController> enemies;
 
     EnemyPattern[] enemyPatterns;
     Path[] enemyPaths;
@@ -32,7 +32,7 @@ public class EnemySpawner : MonoBehaviour
         timers = new int[enemyPatterns.Length];
         totalCounts = new int[enemyPatterns.Length];
 
-        enemies = new HashSet<Enemy>();
+        enemies = new HashSet<EnemyController>();
 
         for (int i = 0; i < enemyPatterns.Length; i++)
         {
@@ -53,7 +53,7 @@ public class EnemySpawner : MonoBehaviour
             timers[i]--;
             if (timers[i] < 0 && totalCounts[i] > 0)
             {
-                Enemy go = Instantiate(enemyPrefab, enemyPaths[i].GetPosition(0), Quaternion.identity, transform);
+                EnemyController go = Instantiate(enemyPrefab, enemyPaths[i].GetPosition(0), Quaternion.identity, transform);
                 go.Init(enemyPaths[i], this);
                 enemies.Add(go);
                 timers[i] = enemyPatterns[i].spacing;
@@ -73,7 +73,7 @@ public class EnemySpawner : MonoBehaviour
 
 
 
-    public Enemy GetEnemyOn(Vector2 pos)
+    public EnemyController GetEnemyOn(Vector2 pos)
     {
         return enemies.FirstOrDefault(e => e.GetPos() == pos);
     }
@@ -86,7 +86,7 @@ public class EnemySpawner : MonoBehaviour
     }
 
 
-    public void OnEnemyDeath(Enemy enemy)
+    public void OnEnemyDeath(EnemyController enemy)
     {
         enemies.Remove(enemy);
     }

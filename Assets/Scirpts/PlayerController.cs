@@ -2,22 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : CommonCharacterController
 {
-    [SerializeField]
-    GameObject attackAnim;
 
     MapManager mapManager;
     public EnemySpawner enemySpawner;
     TickManager tickManager;
 
-    Vector2 oldPos;
-    Vector2 currentPos;
 
-    float timer = 0f;
-    float moveTime = 0.2f;
-
-    Vector2 spawnPos;
+    Sword sword;
 
     // Start is called before the first frame update
     public void Init(MapManager mapManager, EnemySpawner enemySpawner )
@@ -30,37 +23,36 @@ public class PlayerController : MonoBehaviour
         GetComponent<Health>().AddHurtAction(() => { SoundManager.instance.Play("hurt"); });
         GetComponent<Health>().AddDeathAction(OnDeath);
 
-
-        oldPos = transform.position;
-        spawnPos = transform.position;
-        currentPos = oldPos;
+        sword = GetComponent<Sword>();
+        sword.Init(this, mapManager, enemySpawner);
+        MoveTo(transform.position, true);
     }
 
     // Update is called once per frame
-    void Update()
+    protected override void Update()
     {
         if (Input.GetKeyDown(KeyCode.A))
         {
-            MoveTo(currentPos + Vector2.left);
+            TryMove(Vector2.left);
             GetComponentInChildren<SpriteRenderer>().flipX = true;
         }
         if (Input.GetKeyDown(KeyCode.W))
         {
-            MoveTo(currentPos + Vector2.up);
+            TryMove(Vector2.up);
         }
         if (Input.GetKeyDown(KeyCode.S))
         {
-            MoveTo(currentPos + Vector2.down);
+            TryMove(Vector2.down);
         }
         if (Input.GetKeyDown(KeyCode.D))
         {
-            MoveTo(currentPos + Vector2.right);
+            TryMove(Vector2.right);
             GetComponentInChildren<SpriteRenderer>().flipX = false;
         }
 
         if (Input.GetKeyDown(KeyCode.E))
         {
-            Attack();
+            sword.SelectWeapon(GetPos());
             if (FindAnyObjectByType<Projectile>() == null)
             {
                 tickManager.TriggerTick();
@@ -73,63 +65,29 @@ public class PlayerController : MonoBehaviour
                 tickManager.TriggerTick();
             }
         }
-        
-        if(timer <= moveTime)
-        {
-            transform.position = Vector2.Lerp(oldPos, currentPos, timer / moveTime);
-            timer += Time.deltaTime;
-            
-        }
+
+        base.Update();
             
     }
 
-    private void MoveTo(Vector2 position)
+    private void TryMove(Vector2 direction)
     {
-        if (!mapManager.CanMove(position) || FindAnyObjectByType<Projectile>() != null)
+        Vector2 newPos = GetPos() + direction;
+        if (!mapManager.CanMove(newPos) || FindAnyObjectByType<Projectile>() != null)
         {
             return;
         }
         else
         {
-            oldPos = currentPos;
-            currentPos = position;
-            timer = 0;
+            MoveTo(newPos);
             tickManager.TriggerTick();
         }
     }
 
-    private void Attack()
-    {
-        Enemy e = null;
-        foreach (Vector2 vector in mapManager.GetNeighbors(currentPos))
-        {
-            e = enemySpawner.GetEnemyOn(vector);
-            if(e != null)
-            {
-                break;
-            }
 
-        }
-        if(e == null)
-        {
-            Instantiate(attackAnim, currentPos + Vector2.right, Quaternion.identity);
-            
-            return;
-        }
-
-        Instantiate(attackAnim, e.GetPos(), Quaternion.identity);
-        e.GetComponent<Health>().Hurt();
-
-    }
 
     private void OnDeath()
     {
         FindAnyObjectByType<GameManager>().GameOver();
-        
-    }
-
-    public Vector2 GetPos()
-    {
-        return currentPos;
     }
 }

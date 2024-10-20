@@ -6,9 +6,9 @@ public class Projectile : MonoBehaviour
 {
     float speed = 9f;
 
-    Enemy target;
+    EnemyController target;
 
-    public void Init(Enemy target)
+    public void Init(EnemyController target)
     {
         transform.up = target.GetPos() - (Vector2)transform.position;
         this.target = target;

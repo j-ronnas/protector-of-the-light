@@ -71,9 +71,10 @@ public class GameManager : MonoBehaviour
 
         //Init mouse cursor
         GetComponent<BuildingManager>().Init(mapManager, paths);
-
+        print(level.playerSpawn);
         //Create Player
         player = Instantiate(playerPrefab, level.playerSpawn, Quaternion.identity, transform);
+        print(player.transform.position);
         player.Init(mapManager, es);
     }
 

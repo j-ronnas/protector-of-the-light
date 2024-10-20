@@ -25,13 +25,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 261277160227939463}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8718189088632565530}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2000929668171066994
 SpriteRenderer:
@@ -117,6 +117,7 @@ GameObject:
   - component: {fileID: 8718189088632565530}
   - component: {fileID: 6691671614102010877}
   - component: {fileID: 3479085214931751250}
+  - component: {fileID: 7609764649584074019}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -131,6 +132,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6713155946434725469}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -138,7 +140,6 @@ Transform:
   m_Children:
   - {fileID: 7765214547296907259}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6691671614102010877
 MonoBehaviour:
@@ -152,7 +153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70474200e9168ba419c32d03f10a3c6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackAnim: {fileID: 5226746840859482890, guid: 9b2498c9f2eb4b441b83517565d41f12, type: 3}
+  enemySpawner: {fileID: 0}
 --- !u!114 &3479085214931751250
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -167,3 +168,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 3
   healthIndicator: {fileID: 3661837200124066788, guid: 6ca1c30b21289634591fb5f12cfefea2, type: 3}
+--- !u!114 &7609764649584074019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6713155946434725469}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7925fdbbfac376849956cb0f1e16752d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackAnim: {fileID: 5226746840859482890, guid: 9b2498c9f2eb4b441b83517565d41f12, type: 3}
+  tileIndicator: {fileID: 5386030826139255928, guid: 65cce466e7e51764ba6e1b156902102d, type: 3}

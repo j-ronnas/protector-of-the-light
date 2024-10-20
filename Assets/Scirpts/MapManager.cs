@@ -2,8 +2,7 @@ using System;
 
 using System.Collections.Generic;
 using System.IO;
-
-
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -187,7 +186,21 @@ public class MapManager : MonoBehaviour
         return path;
     }
 
+    public HashSet<Vector2> GetTilesInRange(Vector2 startPos, int range ){
+        HashSet<Vector2> tiles = new HashSet<Vector2>();
+        tiles.Add(startPos);
+        for(int i = 0; i < range; i ++){
+            HashSet<Vector2> newTiles = new HashSet<Vector2>();
+            foreach(Vector2 v in tiles){
+                newTiles.UnionWith(GetNeighbors(v));
+            }
 
+            tiles.UnionWith(newTiles);
+            
+        }
+
+        return tiles;
+    }
 
     public  HashSet<Vector2> GetNeighbors(Vector2 vector)
     {
