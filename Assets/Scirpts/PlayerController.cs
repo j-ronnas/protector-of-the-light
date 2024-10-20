@@ -6,8 +6,11 @@ public class PlayerController : CommonCharacterController
 {
 
     MapManager mapManager;
-    public EnemySpawner enemySpawner;
+    EnemySpawner enemySpawner;
     TickManager tickManager;
+
+    [SerializeField]
+    SpriteRenderer characterSprite;
 
 
     Sword sword;
@@ -34,7 +37,7 @@ public class PlayerController : CommonCharacterController
         if (Input.GetKeyDown(KeyCode.A))
         {
             TryMove(Vector2.left);
-            GetComponentInChildren<SpriteRenderer>().flipX = true;
+            characterSprite.flipX = true;
         }
         if (Input.GetKeyDown(KeyCode.W))
         {
@@ -47,16 +50,12 @@ public class PlayerController : CommonCharacterController
         if (Input.GetKeyDown(KeyCode.D))
         {
             TryMove(Vector2.right);
-            GetComponentInChildren<SpriteRenderer>().flipX = false;
+            characterSprite.flipX = false;
         }
 
         if (Input.GetKeyDown(KeyCode.E))
         {
             sword.SelectWeapon(GetPos());
-            if (FindAnyObjectByType<Projectile>() == null)
-            {
-                tickManager.TriggerTick();
-            }
         }
         if (Input.GetKeyDown(KeyCode.Space))
         {

@@ -34593,9 +34593,9 @@ ParticleSystem:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 1077908570}
   - {fileID: 1252324544}
   - {fileID: 1922180697}
   - {fileID: 1931762564}
   - {fileID: 126932210}
   - {fileID: 1300332448}
-  - {fileID: 1077908570}

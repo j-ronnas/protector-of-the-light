@@ -62,7 +62,6 @@ public class MapManager : MonoBehaviour
                 map.Add(new Vector2(x, y), new Tile { type = arr[x], isPassable = arr[x] == "f" });
             }
             y--;
-            //
         }
 
     }

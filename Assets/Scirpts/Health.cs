@@ -16,18 +16,12 @@ public class Health : MonoBehaviour
     [SerializeField]
     GameObject healthIndicator;
 
-    GameObject[] indicators;
-
-
+    float yScale;
     private void Start()
     {
-        health = maxHealth;
-        indicators = new GameObject[maxHealth];
-        for (int i = 0; i < maxHealth; i++)
-        {
-            indicators[i] = Instantiate(healthIndicator, transform);
-            indicators[i].transform.localPosition = new Vector2(((float)i / maxHealth) - (float)(maxHealth-1)/(2*maxHealth), -0.7f);
-        }
+        yScale = healthIndicator.transform.localScale.y;
+        SetHealth(maxHealth);
+        
     }
 
     public void AddDeathAction(Action deathAction)
@@ -42,18 +36,8 @@ public class Health : MonoBehaviour
 
     public void Restore()
     {
-        health = maxHealth;
-        for (int i = 0; i < maxHealth; i++)
-        {
-            if (i < health)
-            {
-                indicators[i].SetActive(true);
-            }
-            else
-            {
-                indicators[i].SetActive(false);
-            }
-        }
+        SetHealth(maxHealth);
+        
     }
 
 
@@ -66,7 +50,7 @@ public class Health : MonoBehaviour
         
 
 
-        health -= amount;
+        SetHealth(health - amount);
         
         if (health <= 0)
         {
@@ -75,18 +59,12 @@ public class Health : MonoBehaviour
             OnDeath = null;
             OnHurt = null;
         }
+    }
 
-        for (int i = 0; i < maxHealth; i++)
-        {
-            if(i < health)
-            {
-                indicators[i].SetActive(true);
-            }
-            else
-            {
-                indicators[i].SetActive(false);
-            }
-        }
+    void SetHealth(int health){
+        this.health = health;
+        healthIndicator.transform.localScale = new Vector3(((float)this.health) / maxHealth, yScale, 1);
+
     }
 
 

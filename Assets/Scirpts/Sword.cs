@@ -20,12 +20,19 @@ public class Sword : MonoBehaviour
     Dictionary<Vector2Int, GameObject> availableTiles;
 
     Vector2Int prevTile = -Vector2Int.one;
+    TickManager tickManager;
 
     public void Init(PlayerController player, MapManager mapManager, EnemySpawner enemySpawner){
         this.player = player;
         this.mapManager = mapManager;
         this.enemySpawner = enemySpawner;
+
+        tickManager = FindObjectOfType<TickManager>();
+        tickManager.AddTickAction(ClearIndicators);
+
         availableTiles = new Dictionary<Vector2Int, GameObject>();
+
+        
     }
 
     void Update(){
@@ -61,6 +68,14 @@ public class Sword : MonoBehaviour
         }
     }
 
+    public void ClearIndicators(){
+        foreach(GameObject go in availableTiles.Values){
+            Destroy(go);
+        }
+        availableTiles.Clear();
+        prevTile = -Vector2Int.one;
+    }
+
     private void Attack(Vector2 pos)
     {
         Instantiate(attackAnim, pos, Quaternion.identity);
@@ -70,6 +85,8 @@ public class Sword : MonoBehaviour
         {
             e.GetComponent<Health>().Hurt();
         }
+
+        tickManager.TriggerTick();
     }
 
 }
