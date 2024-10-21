@@ -3,33 +3,49 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
+public enum EnemyState{
+    CHASING,
+    IDLE,
+    DEAD,
+    ATTACKING
+}
+
 public class EnemyController : CommonCharacterController
 {
-    Path path;
+    //Path path;
+
+    MapManager mapManager;
+    List<Vector2> path;
     int currentIndex;
     [SerializeField]
     Coin coinPrefab;
 
     [SerializeField]
     GameObject attackAnim;
+    [SerializeField]
+    GameObject attackIndicator;
 
+    Dictionary<Vector2, GameObject> attackTargets;
+    
+    [SerializeField]
+    SpriteRenderer spriteRenderer;
     EnemySpawner enemySpawner;
     PlayerController player;
 
     public bool isMarked;
+    EnemyState currentState = EnemyState.CHASING;
     float timeToMove = 1.5f;
     // Start is called before the first frame update
-    public void Init(Path path, EnemySpawner enemySpawner)
+    public void Init(Vector2 startPos, EnemySpawner enemySpawner)
     {
         FindAnyObjectByType<TickManager>().AddTickAction(OnTick);
+        mapManager = FindObjectOfType<MapManager>();
         this.enemySpawner = enemySpawner;
         player = FindAnyObjectByType<PlayerController>();
-        this.path = path;
         GetComponent<Health>().AddDeathAction(Die);
         GetComponent<Health>().AddHurtAction(() => { SoundManager.instance.Play("hit"); });
-
-        MoveTo(path.GetPosition(0), true);
-
+        MoveTo(startPos, true);
+        attackTargets = new Dictionary<Vector2, GameObject>();
         currentIndex = -1;
         OnTick();
     }
@@ -38,40 +54,111 @@ public class EnemyController : CommonCharacterController
 
     private void OnTick()
     {
-        isMarked = false;
         if(timeToMove > 0)
         {
-            timeToMove -= 1;
+            ChangeTimeToMove(-1);
             return;
         }
-        timeToMove += 1.5f;
 
-       // Attack player if close by
-        if (Vector2.SqrMagnitude(player.GetPos()-GetPos()) <= 1)
-        {
-            Instantiate(attackAnim, player.GetPos(), Quaternion.identity);
-            player.GetComponent<Health>().Hurt();
+        isMarked = false;
+        switch(currentState){
+            case EnemyState.CHASING:
+                Chase();
+                break;
+            case EnemyState.ATTACKING:
+                print("attacking Player"); 
+                AttackPlayer();
+                break;
+            default:
+            break;
+        }
+
+        spriteRenderer.color = timeToMove <= 0 ? Color.white : Color.gray;
+        
+       
+    }
+
+    private void ChangeTimeToMove(float amount){
+        timeToMove += amount;
+        if(timeToMove <= 0){
+            //We can move next turn
+            spriteRenderer.color = Color.white;
+            ReadyMove();
+        }else{
+            spriteRenderer.color = Color.gray;
+        }
+
+    }
+
+    private void Chase(){
+        if (Vector2.SqrMagnitude(player.GetPos()-GetPos()) <= 1){
+            ReadyMove();
             return;
         }
+
+        ChangeTimeToMove(1.5f);
+
+        GetPathToPlayer();
 
         currentIndex++;
         
-        Vector2 targetPos = path.GetPosition(currentIndex);
-
-        if(targetPos == -Vector2.one)
+        
+        if( currentIndex < path.Count)
+        {
+            Vector2 targetPos = path[currentIndex];
+            MoveTo(targetPos);
+        }else
         {
             Debug.Log("Enemy reached end");
-            // we reached the end
-            isMarked = true;
-            FindAnyObjectByType<TickManager>().RemoveTickAction(OnTick);
-            FindAnyObjectByType<LightHealth>().Hurt();
-            enemySpawner.OnEnemyDeath(this);
-            Destroy(gameObject);
-            
+            currentState = EnemyState.IDLE;
+            // we reached the end           
         }
-        MoveTo(targetPos);
+
+
+        
     }
 
+    private void GetPathToPlayer(){
+        path = mapManager.findPath(GetPos(), player.GetPos());
+        currentIndex = 0;
+    }
+
+    private void ClearAllTargets(){
+        foreach(GameObject target in attackTargets.Values){
+            Destroy(target);
+        }
+        
+    }
+
+    private void ReadyMove(){
+        if (Vector2.SqrMagnitude(player.GetPos()-GetPos()) <= 1){
+            ClearAllTargets();
+            attackTargets.Clear();
+            foreach(Vector2 v in mapManager.GetTilesInRange(GetPos(), 1)){
+                if(v == GetPos()){
+                    continue;
+                }
+                attackTargets.Add(v, Instantiate(attackIndicator, v, Quaternion.identity));
+            }
+            currentState = EnemyState.ATTACKING;
+            return;
+        }
+        //Indicator for move?
+        currentState = EnemyState.CHASING;
+        
+    }
+    private void AttackPlayer(){
+        ClearAllTargets();
+        if(attackTargets.ContainsKey(player.GetPos())){
+            Instantiate(attackAnim, player.GetPos(), Quaternion.identity);
+            player.GetComponent<Health>().Hurt();
+            ChangeTimeToMove(1.5f);
+        }
+        else{
+            Chase();
+        }
+        
+    }
 
     public void Die()
     {

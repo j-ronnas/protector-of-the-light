@@ -54,7 +54,7 @@ public class EnemySpawner : MonoBehaviour
             if (timers[i] < 0 && totalCounts[i] > 0)
             {
                 EnemyController go = Instantiate(enemyPrefab, enemyPaths[i].GetPosition(0), Quaternion.identity, transform);
-                go.Init(enemyPaths[i], this);
+                go.Init(enemyPaths[i].GetPosition(0), this);
                 enemies.Add(go);
                 timers[i] = enemyPatterns[i].spacing;
                 totalCounts[i]--;

@@ -218,6 +218,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   coinPrefab: {fileID: 758928352670970680, guid: a2aa5f2d4ac7673488d0c92228b350f9, type: 3}
   attackAnim: {fileID: 5226746840859482890, guid: 5d067214599d020479f34353611ad872, type: 3}
+  attackIndicator: {fileID: 3575968795590808435, guid: a1ed8965b271fc847b2df5b1f6bb901e, type: 3}
+  spriteRenderer: {fileID: 6807701193100666819}
   isMarked: 0
 --- !u!114 &8577242798292481662
 MonoBehaviour:
