@@ -13,7 +13,8 @@ public class PlayerController : CommonCharacterController
     SpriteRenderer characterSprite;
 
 
-    Sword sword;
+    Weapon[] weapons;
+    int selectedWeapon = -1;
 
     // Start is called before the first frame update
     public void Init(MapManager mapManager, EnemySpawner enemySpawner )
@@ -26,8 +27,11 @@ public class PlayerController : CommonCharacterController
         GetComponent<Health>().AddHurtAction(() => { SoundManager.instance.Play("hurt"); });
         GetComponent<Health>().AddDeathAction(OnDeath);
 
-        sword = GetComponent<Sword>();
-        sword.Init(this, mapManager, enemySpawner);
+        weapons = GetComponentsInChildren<Weapon>();
+        foreach(Weapon w in weapons){
+            w.Init(mapManager, enemySpawner);
+        }
+        
         MoveTo(transform.position, true);
     }
 
@@ -53,10 +57,6 @@ public class PlayerController : CommonCharacterController
             characterSprite.flipX = false;
         }
 
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            sword.SelectWeapon(GetPos());
-        }
         if (Input.GetKeyDown(KeyCode.Space))
         {
             if(FindAnyObjectByType<Projectile>() == null)
@@ -65,8 +65,31 @@ public class PlayerController : CommonCharacterController
             }
         }
 
+        Weapons();
+
         base.Update();
             
+    }
+
+    private void Weapons(){
+
+
+        if (Input.GetKeyDown(KeyCode.E) && weapons.Length > 1)
+        {
+            weapons[1].ClearIndicators();
+            weapons[1].enabled = false;
+
+            weapons[0].enabled = true;
+            weapons[0].SelectWeapon(GetPos());
+        }
+        if (Input.GetKeyDown(KeyCode.Q) && weapons.Length > 1)
+        {
+            weapons[0].ClearIndicators();
+            weapons[0].enabled = false;
+
+            weapons[1].enabled = true;
+            weapons[1].SelectWeapon(GetPos());
+        }
     }
 
     private void TryMove(Vector2 direction)

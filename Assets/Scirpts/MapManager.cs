@@ -227,6 +227,63 @@ public class MapManager : MonoBehaviour
         return neighbors;
     }
 
+    public List<Vector2> GetTilesInLine(Vector2 start, Vector2 end, float stepLength = 0.1f){
+        int maxIterations = 1000;
+        List<Vector2> tiles = new List<Vector2>();
+        tiles.Add(Vector2Int.FloorToInt(start));
+        Vector2 direction = end - start;
+
+        Vector2 currentTile = start;
+        while (maxIterations > 0){
+            currentTile += direction.normalized * stepLength;
+            Vector2Int newTile = Vector2Int.FloorToInt(currentTile + direction);
+            if(newTile != Vector2Int.FloorToInt(tiles[tiles.Count -1])){
+                tiles.Add(newTile);
+            }
+
+            if(newTile == Vector2Int.FloorToInt(end)){
+                break;
+            }
+
+            maxIterations --;
+        }
+        
+        return tiles;
+    }
+
+    private Vector2 RoundVector(Vector2 v){
+        return new Vector2Int(Mathf.RoundToInt(v.x), Mathf.RoundToInt(v.y) );
+    }
+
+    public List<Vector2> GetTilesFromRay(Vector2 start, Vector2 direction, int maxLength, float stepLength = 0.1f){
+        int maxIterations = 1000;
+        List<Vector2> tiles = new List<Vector2>();
+        tiles.Add(RoundVector(start));
+        Vector2 currentTile = start;
+        while (maxIterations > 0){
+            currentTile += direction.normalized * stepLength;
+            Vector2 newTile = RoundVector(currentTile + direction);
+            
+            if(CanMove(newTile) == false){
+                break;
+            }
+            
+            if(newTile != RoundVector(tiles[tiles.Count -1])){
+                tiles.Add(newTile);
+            }
+
+            if(tiles.Count >= maxLength){
+                break;
+            }
+
+            maxIterations --;
+        }
+        
+        return tiles;
+    }
+
+
+
     
 }
 
