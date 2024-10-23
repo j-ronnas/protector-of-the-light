@@ -9,8 +9,22 @@ public class RangedWeapon : Weapon
     public override void SelectWeapon(Vector2 position)
     {
         availableTiles.Clear();
-        foreach(Vector2 v in mapManager.GetTilesFromRay(position, new Vector2(1,-1), range, 0.05f)){
-            availableTiles.Add(new Vector2Int(Mathf.RoundToInt(v.x), Mathf.RoundToInt(v.y) ), Instantiate(tileIndicator, v, Quaternion.identity));
+        Vector2[] directions = {
+            new Vector2(1,0),
+            new Vector2(1,1),
+            new Vector2(0,1),
+            new Vector2(-1,1),
+            new Vector2(-1,0),
+            new Vector2(-1,-1),
+            new Vector2(0,-1),
+            new Vector2(1,-1),
+        };
+
+        foreach(Vector2 dir in directions){
+            foreach(Vector2 v in mapManager.GetTilesFromRay(position, dir, range, 0.05f)){
+                availableTiles.TryAdd(new Vector2Int(Mathf.RoundToInt(v.x), Mathf.RoundToInt(v.y) ), Instantiate(tileIndicator, v, Quaternion.identity));
+            }
         }
+        
     }
 }
