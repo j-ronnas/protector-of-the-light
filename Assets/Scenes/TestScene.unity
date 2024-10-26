@@ -151,6 +151,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3022ba4e6ce472c4a9742fdca6458965, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  roomPrefab: {fileID: 6386831692072858540, guid: d26203ea1bd2d5243be4c30dd536b578, type: 3}
+  doorPrefab: {fileID: 1420086839751020425, guid: 14d75a9445e37e44ea3b4347a5682bd1, type: 3}
 --- !u!4 &999707825
 Transform:
   m_ObjectHideFlags: 0

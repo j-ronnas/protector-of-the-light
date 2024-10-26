@@ -1,15 +1,36 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Assertions;
 
 public class DungeonRoomTester : MonoBehaviour
 {
     DungeonGenerator dungeonGenerator;
+    [SerializeField] GameObject roomPrefab;
+    [SerializeField] GameObject doorPrefab;
     // Start is called before the first frame update
     void Start()
     {
+        DisplayMap();
+
+    }
+
+    void DisplayMap(){
+        DungeonGenerator dg = new DungeonGenerator(10);
+        dg.GenerateDungeon();
+        foreach(KeyValuePair<Vector2Int, DungeonRoom> room in dg.GetRoomMap()){
+            Instantiate(roomPrefab, (Vector2)room.Key, Quaternion.identity);
+            foreach(Vector2Int door in room.Value.doorDirections){
+                Vector2 pos = room.Key + ((Vector2)door)*0.45f;
+                Instantiate(doorPrefab, pos, Quaternion.identity);
+            }
+        }
+
+    }
+
+    void RunTests(){
         // Create an instance of the test class
         var dungeonRoomTests = new DungeonRoomTests();
         
