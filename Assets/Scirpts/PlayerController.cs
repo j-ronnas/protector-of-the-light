@@ -6,7 +6,7 @@ public class PlayerController : CommonCharacterController
 {
 
     MapManager mapManager;
-    EnemySpawner enemySpawner;
+    EnemyManager enemySpawner;
     TickManager tickManager;
 
     [SerializeField]
@@ -17,7 +17,7 @@ public class PlayerController : CommonCharacterController
     int selectedWeapon = -1;
 
     // Start is called before the first frame update
-    public void Init(MapManager mapManager, EnemySpawner enemySpawner )
+    public void Init(MapManager mapManager, EnemyManager enemySpawner )
     {
         this.mapManager = mapManager;
         this.enemySpawner = enemySpawner;

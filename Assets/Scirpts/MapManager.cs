@@ -2,6 +2,7 @@ using System;
 
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -12,6 +13,9 @@ public class MapManager : MonoBehaviour
     GameObject wallPrefab;
     [SerializeField]
     GameObject floorPrefab;
+    [SerializeField]
+    List<MapObject> mapObjects;
+    Dictionary<string, GameObject> mapObjectPrefabs;
 
     [SerializeField]
     Sprite[] tileset;
@@ -24,18 +28,30 @@ public class MapManager : MonoBehaviour
 
     Dictionary<Vector2, Tile> map;
 
-    readonly int mapHeight = 17;
-    readonly int mapWidth = 23;
 
+    public static readonly int MAP_HEIGHT = 18;
+    public static readonly int MAP_WIDTH = 24;
 
 
     public void CreateLevel(Level level)
     {
-        ReadMap(level.fileName);
+        this.map = level.map;
         InstantiateMap();
     }
 
-    private void ReadMap(string fileName)
+    
+
+
+
+    private void InitPrefabMap(){
+        mapObjectPrefabs = new Dictionary<string, GameObject>();
+
+        foreach(MapObject mapObject in mapObjects){
+            mapObjectPrefabs.Add(mapObject.code, mapObject.prefab);
+        }
+    }
+/* 
+    private void ReadCSVMap(string fileName)
     {
         map = new Dictionary<Vector2, Tile>();
 
@@ -64,18 +80,28 @@ public class MapManager : MonoBehaviour
             y--;
         }
 
-    }
+    } */
 
 
     private void InstantiateMap()
     {
+        if (mapObjectPrefabs == null){
+            InitPrefabMap();
+        }
+
         foreach (var item in map)
         {
-            if(item.Value.type == "f")
+            if(item.Value.type != "w")
             {
                 GameObject floor = Instantiate(floorPrefab, item.Key, Quaternion.identity, transform);
                 floor.transform.position += new Vector3(0, 0, 1f);
                 floor.GetComponent<SpriteRenderer>().sprite = DetermineFloorSprite(item.Key);
+
+                if(mapObjectPrefabs.ContainsKey(item.Value.type)){
+                    Instantiate(mapObjectPrefabs[item.Value.type], item.Key, Quaternion.identity, transform);
+                }
+                
+
             }
             if(item.Value.type == "w")
             {
@@ -89,7 +115,7 @@ public class MapManager : MonoBehaviour
     private Sprite DetermineFloorSprite(Vector2 vector)
     {
         //North
-        if ( map[vector + Vector2.up].type == "w")
+        if ( vector.y < MAP_HEIGHT -1 &&  map[vector + Vector2.up].type == "w")
         {
             map[vector].SetPassable(false);
             return floorWallSprite;
@@ -102,7 +128,7 @@ public class MapManager : MonoBehaviour
     {
         int index = 0;
         //North
-        if(vector2.y >= mapHeight || map[vector2 + Vector2.up].type == "w")
+        if(vector2.y >= MAP_HEIGHT -1 || map[vector2 + Vector2.up].type == "w")
         {
             index += 1;
         }
@@ -112,7 +138,7 @@ public class MapManager : MonoBehaviour
             index += 2;
         }
         //East
-        if (vector2.x >= mapWidth || map[vector2 + Vector2.right].type == "w")
+        if (vector2.x >= MAP_WIDTH -1 || map[vector2 + Vector2.right].type == "w")
         {
             index += 4;
         }
@@ -204,7 +230,7 @@ public class MapManager : MonoBehaviour
     public  HashSet<Vector2> GetNeighbors(Vector2 vector)
     {
         HashSet<Vector2> neighbors = new HashSet<Vector2>();
-        if (vector.y < mapHeight && map[vector + Vector2.up].isPassable)
+        if (vector.y < MAP_HEIGHT && map[vector + Vector2.up].isPassable)
         {
             neighbors.Add(vector + Vector2.up);
         }
@@ -214,7 +240,7 @@ public class MapManager : MonoBehaviour
             neighbors.Add(vector + Vector2.left);
         }
         //East
-        if (vector.x < mapWidth && map[vector + Vector2.right].isPassable)
+        if (vector.x < MAP_WIDTH && map[vector + Vector2.right].isPassable)
         {
             neighbors.Add(vector + Vector2.right);
         }
@@ -296,4 +322,10 @@ public class Tile
     {
         this.isPassable = value;
     }
+}
+
+[Serializable]
+public struct MapObject{
+    public string code;
+    public GameObject prefab;
 }

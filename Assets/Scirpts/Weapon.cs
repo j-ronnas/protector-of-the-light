@@ -13,11 +13,11 @@ public abstract class Weapon : MonoBehaviour
     protected Dictionary<Vector2Int, GameObject> availableTiles;
     Vector2Int prevTile = -Vector2Int.one;
 
-    EnemySpawner enemySpawner;
+    EnemyManager enemySpawner;
     TickManager tickManager;
     protected MapManager mapManager;
 
-    public void Init(MapManager mapManager, EnemySpawner enemySpawner){
+    public void Init(MapManager mapManager, EnemyManager enemySpawner){
         this.mapManager = mapManager;
         this.enemySpawner = enemySpawner;
 

@@ -18,7 +18,7 @@ public class Tower : MonoBehaviour
     [SerializeField]
     Transform crossbow;
 
-    EnemySpawner enemySpawner;
+    EnemyManager enemySpawner;
 
     Vector2 position;
     int range = 3;
@@ -32,7 +32,7 @@ public class Tower : MonoBehaviour
         timer = cooldown;
         targets = new List<EnemyController>();
         FindAnyObjectByType<TickManager>().AddTickAction(OnTick);
-        enemySpawner = FindAnyObjectByType<EnemySpawner>();
+        enemySpawner = FindAnyObjectByType<EnemyManager>();
     }
 
     // Update is called once per frame

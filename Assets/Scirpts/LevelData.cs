@@ -6,6 +6,7 @@ using UnityEngine.UIElements;
 public class LevelData
 {
     Level[] levels;
+    Dictionary<Vector2Int, Level> map;
 
     public int NumberOfLevels()
     {
@@ -16,7 +17,59 @@ public class LevelData
         return levels[index];
     }
 
-    public LevelData()
+    public LevelData(){
+        DungeonGenerator dungeonGenerator =new DungeonGenerator(15);
+        dungeonGenerator.GenerateDungeon();
+
+        map = new Dictionary<Vector2Int, Level>();
+        foreach(KeyValuePair<Vector2Int, DungeonRoom> dungeonRoom in dungeonGenerator.GetRoomMap()) {
+            map.Add(dungeonRoom.Key, new Level(
+                ReadPixelMap(dungeonRoom.Value.templateFileName, MapManager.MAP_HEIGHT, MapManager.MAP_WIDTH)
+            ));
+        }
+
+    }
+
+    private Dictionary<Vector2, Tile> ReadPixelMap(string fileName, int mapHeight, int mapWidth){
+        Dictionary<Vector2, Tile> map = new Dictionary<Vector2, Tile>();
+
+        Texture2D texture = Resources.Load<Texture2D>(fileName);
+        Color[] colors = texture.GetPixels();
+
+        for (int y = 0;  y < mapHeight; y ++)
+        {
+            for(int x = 0; x < mapWidth; x++)
+            {
+                string tileType = ColorToTileType(colors[y*mapWidth + x]);
+                map.Add(new Vector2(x, y), new Tile { type = tileType, isPassable = tileType != "w" });
+            
+            }
+        }
+
+        return map;
+    }
+
+    private string ColorToTileType(Color color){
+        if(color == Color.black){
+            return "w";
+        }
+        if(color == Color.white){
+            return "f";
+        }
+        if(color == Color.red){
+            return "e";
+        }
+        if(color == Color.blue){
+            return "c";
+        }
+        if(color == Color.green){
+            return "d";
+        }
+
+        Debug.LogWarning("Not a recognised color: " + color.ToString());
+        return "f";
+    }
+    /* public LevelData()
     {
         levels = new Level[3];
 
@@ -96,7 +149,7 @@ public class LevelData
 
 
 
-    }
+    } */
 
 
 
@@ -106,11 +159,60 @@ public class LevelData
 
 public class Level
 {
-    public Vector2 playerSpawn;
-    public Vector2 goal;
-    public EnemyPattern[] enemyPatterns;
+    public List<Vector2Int> doors;
+    public List<Vector2Int> enemySpawns;
+    public Dictionary<Vector2, Tile> map;
+    public Level(Dictionary<Vector2, Tile> map){
+        this.map = map;
+        doors = new List<Vector2Int>();
+        enemySpawns = new List<Vector2Int>();
+        foreach(KeyValuePair<Vector2, Tile> tile in map){
+            if(tile.Value.type == "d"){
+                doors.Add(Vector2Int.FloorToInt(tile.Key));
+            }
+            if(tile.Value.type == "e"){
+                enemySpawns.Add(Vector2Int.FloorToInt(tile.Key));
+            }
+        }
+    }
 
-    public string fileName;
+    public List<Vector2Int> GetDoorsInDirection(Vector2Int direction){
+        List<Vector2Int> doorList = new List<Vector2Int>();
+
+        if(direction == Vector2Int.up){
+            foreach(Vector2Int door in doors){
+                if(door.y == MapManager.MAP_HEIGHT -1){
+                    doorList.Add(door);
+                }
+            }
+        }
+        if(direction == Vector2Int.down){
+            foreach(Vector2Int door in doors){
+                if(door.y == 0){
+                    doorList.Add(door);
+                }
+            }
+        }
+        if(direction == Vector2Int.right){
+            foreach(Vector2Int door in doors){
+                if(door.x == MapManager.MAP_WIDTH -1){
+                    doorList.Add(door);
+                }
+            }
+        }
+        if(direction == Vector2Int.left){
+            foreach(Vector2Int door in doors){
+                if(door.x == 0){
+                    doorList.Add(door);
+                }
+            }
+        }
+
+        return doorList;
+
+    }
+
+
 }
 
 

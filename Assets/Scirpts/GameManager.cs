@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
     Path pathPrefab;
 
     [SerializeField]
-    EnemySpawner enemySpawnerPrefab;
+    EnemyManager enemySpawnerPrefab;
 
     [SerializeField]
     GameObject mainMenu;
@@ -39,41 +39,19 @@ public class GameManager : MonoBehaviour
 
     bool shouldStartLevel = false;
 
-    public void StartLevel(Level level)
+    public void StartLevel(Level level, Vector2Int doorDirection)
     {
         //Create map
         mapManager.CreateLevel(level);
 
-        //Setup health
-        LightHealth lightHealth = GetComponent<LightHealth>();
-        lightHealth.Restore();
-
-
-        
-
-        //Place light
-        Instantiate(goal, level.goal, Quaternion.identity, transform);
-
         //Create Enemy Spawner
-        EnemySpawner es = Instantiate(enemySpawnerPrefab, transform);
+        EnemyManager es = Instantiate(enemySpawnerPrefab, transform);
         es.name = "enemy spawner" + currentLevel;
 
-        Path[] paths = new Path[level.enemyPatterns.Length];
 
-        for (int i = 0; i < level.enemyPatterns.Length; i++)
-        {
-            paths[i] = Instantiate(pathPrefab, mapManager.transform);
-            paths[i].Init(level.enemyPatterns[i].startPos, level.goal);
-        }
-
-        es.Init(level.enemyPatterns, paths);
-
-
-        //Init mouse cursor
-        GetComponent<BuildingManager>().Init(mapManager, paths);
-        print(level.playerSpawn);
+        es.Init(level.enemySpawns);
         //Create Player
-        player = Instantiate(playerPrefab, level.playerSpawn, Quaternion.identity, transform);
+        player = Instantiate(playerPrefab, (Vector2)level.GetDoorsInDirection(doorDirection)[0], Quaternion.identity, transform);
         print(player.transform.position);
         player.Init(mapManager, es);
     }
@@ -157,7 +135,7 @@ public class GameManager : MonoBehaviour
     {
         if (shouldStartLevel)
         {
-            StartLevel(levelData.GetLevel(currentLevel));
+            StartLevel(levelData.GetLevel(currentLevel), Vector2Int.down);
             shouldStartLevel = false;
         }
     }

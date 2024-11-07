@@ -29,14 +29,14 @@ public class EnemyController : CommonCharacterController
     
     [SerializeField]
     SpriteRenderer spriteRenderer;
-    EnemySpawner enemySpawner;
+    EnemyManager enemySpawner;
     PlayerController player;
 
     public bool isMarked;
     EnemyState currentState = EnemyState.CHASING;
     float timeToMove = 1.5f;
     // Start is called before the first frame update
-    public void Init(Vector2 startPos, EnemySpawner enemySpawner)
+    public void Init(Vector2 startPos, EnemyManager enemySpawner)
     {
         FindAnyObjectByType<TickManager>().AddTickAction(OnTick);
         mapManager = FindObjectOfType<MapManager>();
