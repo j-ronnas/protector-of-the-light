@@ -92,5 +92,5 @@ public abstract class Weapon : MonoBehaviour
 
 
     
-    public abstract void SelectWeapon(Vector2 position);
+    public abstract void SelectWeapon(Vector2Int position);
 }

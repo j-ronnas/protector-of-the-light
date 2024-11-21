@@ -15,7 +15,7 @@ public class EnemyController : CommonCharacterController
     //Path path;
 
     MapManager mapManager;
-    List<Vector2> path;
+    List<Vector2Int> path;
     int currentIndex;
     [SerializeField]
     Coin coinPrefab;
@@ -36,7 +36,7 @@ public class EnemyController : CommonCharacterController
     EnemyState currentState = EnemyState.CHASING;
     float timeToMove = 1.5f;
     // Start is called before the first frame update
-    public void Init(Vector2 startPos, EnemyManager enemySpawner)
+    public void Init(Vector2Int startPos, EnemyManager enemySpawner)
     {
         FindAnyObjectByType<TickManager>().AddTickAction(OnTick);
         mapManager = FindObjectOfType<MapManager>();
@@ -105,7 +105,7 @@ public class EnemyController : CommonCharacterController
         
         if( currentIndex < path.Count)
         {
-            Vector2 targetPos = path[currentIndex];
+            Vector2Int targetPos = path[currentIndex];
             MoveTo(targetPos);
         }else
         {
@@ -150,7 +150,7 @@ public class EnemyController : CommonCharacterController
     private void AttackPlayer(){
         ClearAllTargets();
         if(attackTargets.ContainsKey(player.GetPos())){
-            Instantiate(attackAnim, player.GetPos(), Quaternion.identity);
+            Instantiate(attackAnim, (Vector3Int)player.GetPos(), Quaternion.identity);
             player.GetComponent<Health>().Hurt();
             ChangeTimeToMove(1.5f);
         }
@@ -162,7 +162,7 @@ public class EnemyController : CommonCharacterController
 
     public void Die()
     {
-        Coin c = Instantiate(coinPrefab, GetPos(), Quaternion.identity, enemySpawner.transform);
+        Coin c = Instantiate(coinPrefab, (Vector3Int)GetPos(), Quaternion.identity, enemySpawner.transform);
         c.Init(GetPos());
         isMarked = true;
         FindAnyObjectByType<TickManager>().RemoveTickAction(OnTick);

@@ -30,17 +30,24 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     GameObject coverPanel;
 
-    int currentLevel = 0;
+    Vector2Int currentLevel = Vector2Int.zero;
 
 
-    LevelData levelData = new LevelData();
+    LevelData levelData;
 
     PlayerController player;
 
     bool shouldStartLevel = false;
 
-    public void StartLevel(Level level, Vector2Int doorDirection)
+    private void Start(){
+        print("starting game manager");
+        levelData = new LevelData();
+    }
+
+    void StartLevel(Level level, Vector2Int doorDirection, bool isEntrance = false)
     {
+
+        FindAnyObjectByType<TickManager>().AddTickAction(OnTick);
         //Create map
         mapManager.CreateLevel(level);
 
@@ -51,7 +58,12 @@ public class GameManager : MonoBehaviour
 
         es.Init(level.enemySpawns);
         //Create Player
-        player = Instantiate(playerPrefab, (Vector2)level.GetDoorsInDirection(doorDirection)[0], Quaternion.identity, transform);
+        if(isEntrance){
+            player = Instantiate(playerPrefab, new Vector2(6,12), Quaternion.identity, transform);
+        }else{
+            player = Instantiate(playerPrefab, (Vector2)level.GetDoorsInDirection(doorDirection)[0], Quaternion.identity, transform);
+        }
+        
         print(player.transform.position);
         player.Init(mapManager, es);
     }
@@ -78,7 +90,8 @@ public class GameManager : MonoBehaviour
 
     public void OnLevelCompleted()
     {
-        GetComponent<BuildingManager>().SetMouseCursorMode(MouseMode.MENU);
+
+ /*        GetComponent<BuildingManager>().SetMouseCursorMode(MouseMode.MENU);
         player.enabled = false;
         currentLevel++;
         coverPanel.SetActive(true);
@@ -87,9 +100,20 @@ public class GameManager : MonoBehaviour
             victoryScreen.SetActive(true);
             return;
         }
-        nextlevelMenu.SetActive(true);
+        nextlevelMenu.SetActive(true); */
     }
 
+
+    void OnTick(){
+        Level level = levelData.GetLevel(currentLevel);
+        if (level.doors.Contains(player.GetPos())){
+            ClearLevel();
+            Vector2Int doorDir = level.GetDirectionOfDoor(player.GetPos());
+            currentLevel += doorDir;
+            StartLevel(levelData.GetLevel(currentLevel), -doorDir);
+            
+        }
+    }
 
     public void GameOver()
     {
@@ -116,7 +140,7 @@ public class GameManager : MonoBehaviour
 
     public void ToMainMenu()
     {
-        currentLevel = 0;
+        currentLevel = Vector2Int.zero;
         mainMenu.SetActive(true);
         gameOverMenu.SetActive(false);
         nextlevelMenu.SetActive(false);
@@ -135,7 +159,9 @@ public class GameManager : MonoBehaviour
     {
         if (shouldStartLevel)
         {
-            StartLevel(levelData.GetLevel(currentLevel), Vector2Int.down);
+            print("starting leve");
+            print(levelData == null);
+            StartLevel(levelData.GetLevel(currentLevel), Vector2Int.up, true);
             shouldStartLevel = false;
         }
     }

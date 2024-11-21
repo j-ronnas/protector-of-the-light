@@ -5,16 +5,13 @@ using UnityEngine.UIElements;
 
 public class LevelData
 {
-    Level[] levels;
+
     Dictionary<Vector2Int, Level> map;
 
-    public int NumberOfLevels()
+
+    public Level GetLevel(Vector2Int index)
     {
-        return levels.Length;
-    }
-    public Level GetLevel(int index)
-    {
-        return levels[index];
+        return map[index];
     }
 
     public LevelData(){
@@ -34,6 +31,7 @@ public class LevelData
         Dictionary<Vector2, Tile> map = new Dictionary<Vector2, Tile>();
 
         Texture2D texture = Resources.Load<Texture2D>(fileName);
+        Debug.Log(fileName+","+texture);
         Color[] colors = texture.GetPixels();
 
         for (int y = 0;  y < mapHeight; y ++)
@@ -210,6 +208,22 @@ public class Level
 
         return doorList;
 
+    }
+
+    public Vector2Int GetDirectionOfDoor(Vector2Int doorPos){
+        if(doorPos.y == MapManager.MAP_HEIGHT -1){
+            return Vector2Int.up;
+        }
+        if(doorPos.y == 0){
+            return Vector2Int.down;
+        }
+        if(doorPos.x == MapManager.MAP_WIDTH -1){
+            return Vector2Int.right;
+        }
+        if(doorPos.x == 0){
+            return Vector2Int.left;
+        }
+        return Vector2Int.zero;
     }
 
 

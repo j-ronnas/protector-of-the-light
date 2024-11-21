@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Path : MonoBehaviour
 {
-    List<Vector2> points;
+    List<Vector2Int> points;
     MapManager mapManager;
 
     float animationSpeed = 0.5f;
@@ -19,7 +19,7 @@ public class Path : MonoBehaviour
         return -Vector2.one;
     }
 
-    public void Init(Vector2 start, Vector2 end)
+    public void Init(Vector2Int start, Vector2Int end)
     {
 
         mapManager = FindObjectOfType<MapManager>();
@@ -40,7 +40,7 @@ public class Path : MonoBehaviour
         GetComponent<LineRenderer>().material.mainTextureOffset -= new Vector2(Time.deltaTime* animationSpeed, 0);
     }
 
-    public bool ContainsPos(Vector2 pos)
+    public bool ContainsPos(Vector2Int pos)
     {
         return points.Contains(pos);
     }

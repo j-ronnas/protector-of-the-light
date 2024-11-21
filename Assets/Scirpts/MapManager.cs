@@ -158,20 +158,20 @@ public class MapManager : MonoBehaviour
 
 
 
-    public  List<Vector2> findPath(Vector2 start, Vector2 end)
+    public  List<Vector2Int> findPath(Vector2Int start, Vector2Int end)
     {
         
-        Dictionary<Vector2, Vector2> toPrvious = new Dictionary<Vector2, Vector2>();
+        Dictionary<Vector2Int, Vector2Int> toPrvious = new Dictionary<Vector2Int, Vector2Int>();
 
-        Queue<Vector2> uncheckedRegions = new Queue<Vector2>();
+        Queue<Vector2Int> uncheckedRegions = new Queue<Vector2Int>();
         HashSet<Vector2> checkedRegions = new HashSet<Vector2>();
         uncheckedRegions.Enqueue(start);
 
         while (uncheckedRegions.Count > 0)
         {
-            Vector2 currentRegion = uncheckedRegions.Dequeue();
-            HashSet<Vector2> neighbors = GetNeighbors(currentRegion);
-            foreach (Vector2 item in neighbors)
+            Vector2Int currentRegion = uncheckedRegions.Dequeue();
+            HashSet<Vector2Int> neighbors = GetNeighbors(currentRegion);
+            foreach (Vector2Int item in neighbors)
             {
                 if (checkedRegions.Contains(item))
                 {
@@ -195,10 +195,10 @@ public class MapManager : MonoBehaviour
         
     }
 
-    List<Vector2> createPath(Dictionary<Vector2, Vector2> toPrvious, Vector2 start, Vector2 end)
+    List<Vector2Int> createPath(Dictionary<Vector2Int, Vector2Int> toPrvious, Vector2Int start, Vector2Int end)
     {
-        List<Vector2> path = new List<Vector2>();
-        Vector2 current = end;
+        List<Vector2Int> path = new List<Vector2Int>();
+        Vector2Int current = end;
         while (current != start)
         {
             path.Add(current);
@@ -211,12 +211,12 @@ public class MapManager : MonoBehaviour
         return path;
     }
 
-    public HashSet<Vector2> GetTilesInRange(Vector2 startPos, int range ){
-        HashSet<Vector2> tiles = new HashSet<Vector2>();
+    public HashSet<Vector2Int> GetTilesInRange(Vector2Int startPos, int range ){
+        HashSet<Vector2Int> tiles = new HashSet<Vector2Int>();
         tiles.Add(startPos);
         for(int i = 0; i < range; i ++){
-            HashSet<Vector2> newTiles = new HashSet<Vector2>();
-            foreach(Vector2 v in tiles){
+            HashSet<Vector2Int> newTiles = new HashSet<Vector2Int>();
+            foreach(Vector2Int v in tiles){
                 newTiles.UnionWith(GetNeighbors(v));
             }
 
@@ -227,27 +227,27 @@ public class MapManager : MonoBehaviour
         return tiles;
     }
 
-    public  HashSet<Vector2> GetNeighbors(Vector2 vector)
+    public  HashSet<Vector2Int> GetNeighbors(Vector2Int vector)
     {
-        HashSet<Vector2> neighbors = new HashSet<Vector2>();
+        HashSet<Vector2Int> neighbors = new HashSet<Vector2Int>();
         if (vector.y < MAP_HEIGHT && map[vector + Vector2.up].isPassable)
         {
-            neighbors.Add(vector + Vector2.up);
+            neighbors.Add(vector + Vector2Int.up);
         }
         //West
         if (vector.x > 0 && map[vector + Vector2.left].isPassable)
         {
-            neighbors.Add(vector + Vector2.left);
+            neighbors.Add(vector + Vector2Int.left);
         }
         //East
         if (vector.x < MAP_WIDTH && map[vector + Vector2.right].isPassable)
         {
-            neighbors.Add(vector + Vector2.right);
+            neighbors.Add(vector + Vector2Int.right);
         }
         //South
         if (vector.y > 0 && map[vector + Vector2.down].isPassable)
         {
-            neighbors.Add(vector + Vector2.down);
+            neighbors.Add(vector + Vector2Int.down);
         }
 
         return neighbors;

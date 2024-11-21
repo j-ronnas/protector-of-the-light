@@ -7,7 +7,7 @@ public class MeleeWeapon : Weapon
 {
     int range = 2;
 
-    public override void SelectWeapon(Vector2 position)
+    public override void SelectWeapon(Vector2Int position)
     {
         availableTiles.Clear();
         foreach(Vector2 v in mapManager.GetTilesInRange(position, range)){

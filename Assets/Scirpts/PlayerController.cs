@@ -32,7 +32,7 @@ public class PlayerController : CommonCharacterController
             w.Init(mapManager, enemySpawner);
         }
         
-        MoveTo(transform.position, true);
+        MoveTo(Vector2Int.FloorToInt(transform.position), true);
     }
 
     // Update is called once per frame
@@ -40,20 +40,20 @@ public class PlayerController : CommonCharacterController
     {
         if (Input.GetKeyDown(KeyCode.A))
         {
-            TryMove(Vector2.left);
+            TryMove(Vector2Int.left);
             characterSprite.flipX = true;
         }
         if (Input.GetKeyDown(KeyCode.W))
         {
-            TryMove(Vector2.up);
+            TryMove(Vector2Int.up);
         }
         if (Input.GetKeyDown(KeyCode.S))
         {
-            TryMove(Vector2.down);
+            TryMove(Vector2Int.down);
         }
         if (Input.GetKeyDown(KeyCode.D))
         {
-            TryMove(Vector2.right);
+            TryMove(Vector2Int.right);
             characterSprite.flipX = false;
         }
 
@@ -92,9 +92,9 @@ public class PlayerController : CommonCharacterController
         }
     }
 
-    private void TryMove(Vector2 direction)
+    private void TryMove(Vector2Int direction)
     {
-        Vector2 newPos = GetPos() + direction;
+        Vector2Int newPos = GetPos() + direction;
         if (!mapManager.CanMove(newPos) || FindAnyObjectByType<Projectile>() != null)
         {
             return;

@@ -23,91 +23,91 @@ public class DungeonGenerator
             // Room with only an Up door
             new DungeonRoom
             {
-                templateFileName = "Room1",
+                templateFileName = "room_N",
                 doorDirections = new HashSet<Vector2Int> { new Vector2Int(0, 1) }
             },
             // Room with only a Down door
             new DungeonRoom
             {
-                templateFileName = "Room2",
+                templateFileName = "room_S",
                 doorDirections = new HashSet<Vector2Int> { new Vector2Int(0, -1) }
             },
             // Room with only a Left door
             new DungeonRoom
             {
-                templateFileName = "Room3",
+                templateFileName = "room_W",
                 doorDirections = new HashSet<Vector2Int> { new Vector2Int(-1, 0) }
             },
             // Room with only a Right door
             new DungeonRoom
             {
-                templateFileName = "Room4",
+                templateFileName = "room_E",
                 doorDirections = new HashSet<Vector2Int> { new Vector2Int(1, 0) }
             },
             // Room with Up and Down doors
             new DungeonRoom
             {
-                templateFileName = "Room5",
+                templateFileName = "room_NS",
                 doorDirections = new HashSet<Vector2Int> { new Vector2Int(0, 1), new Vector2Int(0, -1) }
             },
             // Room with Up and Left doors
             new DungeonRoom
             {
-                templateFileName = "Room6",
+                templateFileName = "room_NW",
                 doorDirections = new HashSet<Vector2Int> { new Vector2Int(0, 1), new Vector2Int(-1, 0) }
             },
             // Room with Up and Right doors
             new DungeonRoom
             {
-                templateFileName = "Room7",
+                templateFileName = "room_NE",
                 doorDirections = new HashSet<Vector2Int> { new Vector2Int(0, 1), new Vector2Int(1, 0) }
             },
             // Room with Down and Left doors
             new DungeonRoom
             {
-                templateFileName = "Room8",
+                templateFileName = "room_SW",
                 doorDirections = new HashSet<Vector2Int> { new Vector2Int(0, -1), new Vector2Int(-1, 0) }
             },
             // Room with Down and Right doors
             new DungeonRoom
             {
-                templateFileName = "Room9",
+                templateFileName = "room_ES",
                 doorDirections = new HashSet<Vector2Int> { new Vector2Int(0, -1), new Vector2Int(1, 0) }
             },
             // Room with Left and Right doors
             new DungeonRoom
             {
-                templateFileName = "Room10",
+                templateFileName = "room_EW",
                 doorDirections = new HashSet<Vector2Int> { new Vector2Int(-1, 0), new Vector2Int(1, 0) }
             },
             // Room with Up, Down, and Left doors
             new DungeonRoom
             {
-                templateFileName = "Room11",
+                templateFileName = "room_NSW",
                 doorDirections = new HashSet<Vector2Int> { new Vector2Int(0, 1), new Vector2Int(0, -1), new Vector2Int(-1, 0) }
             },
             // Room with Up, Down, and Right doors
             new DungeonRoom
             {
-                templateFileName = "Room12",
+                templateFileName = "room_NES",
                 doorDirections = new HashSet<Vector2Int> { new Vector2Int(0, 1), new Vector2Int(0, -1), new Vector2Int(1, 0) }
             },
             // Room with Up, Left, and Right doors
             new DungeonRoom
             {
-                templateFileName = "Room13",
+                templateFileName = "room_NEW",
                 doorDirections = new HashSet<Vector2Int> { new Vector2Int(0, 1), new Vector2Int(-1, 0), new Vector2Int(1, 0) }
             },
             // Room with Down, Left, and Right doors
             new DungeonRoom
             {
-                templateFileName = "Room14",
+                templateFileName = "room_ESW",
                 doorDirections = new HashSet<Vector2Int> { new Vector2Int(0, -1), new Vector2Int(-1, 0), new Vector2Int(1, 0) }
             },
             // Room with all four doors
             new DungeonRoom
             {
-                templateFileName = "Room15",
+                templateFileName = "room_NESW",
                 doorDirections = new HashSet<Vector2Int> { new Vector2Int(0, 1), new Vector2Int(0, -1), new Vector2Int(-1, 0), new Vector2Int(1, 0) }
             }
         };

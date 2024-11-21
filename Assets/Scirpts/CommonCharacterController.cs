@@ -6,7 +6,7 @@ using UnityEngine;
 public abstract class CommonCharacterController : MonoBehaviour
 {
     Vector2 oldPos;
-    Vector2 currentPos;
+    Vector2Int currentPos;
 
     float timer = 0f;
     float moveTime = 0.2f;
@@ -18,7 +18,7 @@ public abstract class CommonCharacterController : MonoBehaviour
         
     }
 
-    protected void MoveTo(Vector2 position, bool setOld = false){
+    protected void MoveTo(Vector2Int position, bool setOld = false){
         
         oldPos = setOld ? position : currentPos;
         currentPos = position;
@@ -35,7 +35,7 @@ public abstract class CommonCharacterController : MonoBehaviour
 
         }
     }
-        public Vector2 GetPos()
+    public Vector2Int GetPos()
     {
         return currentPos;
     }

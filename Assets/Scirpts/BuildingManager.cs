@@ -77,7 +77,7 @@ public class BuildingManager : MonoBehaviour
 
         if(currentMouseMode == MouseMode.BUILD_TOWER)
         {
-            mouseSpriteRenderer.color = CanBuild(mouseCursor.transform.position) ? Color.white : Color.red;
+            mouseSpriteRenderer.color = CanBuild(Vector2Int.FloorToInt(mouseCursor.transform.position)) ? Color.white : Color.red;
         }
         else
         {
@@ -94,7 +94,7 @@ public class BuildingManager : MonoBehaviour
             case MouseMode.DEFAULT:
                 break;
             case MouseMode.BUILD_TOWER:
-                if (!CanBuild(mouseCursor.transform.position))
+                if (!CanBuild(Vector2Int.FloorToInt(mouseCursor.transform.position)))
                 {
                     break;
                 }
@@ -126,7 +126,7 @@ public class BuildingManager : MonoBehaviour
         }
     }
 
-    private bool CanBuild(Vector2 pos)
+    private bool CanBuild(Vector2Int pos)
     {
 
         bool isValidSpot = true;

@@ -6,7 +6,7 @@ public class RangedWeapon : Weapon
 {
     int range = 5;
 
-    public override void SelectWeapon(Vector2 position)
+    public override void SelectWeapon(Vector2Int position)
     {
         availableTiles.Clear();
         Vector2[] directions = {
